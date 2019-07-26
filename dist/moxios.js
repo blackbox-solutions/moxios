@@ -52,7 +52,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -95,7 +95,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	var TimeoutException = new Error('Timeout: Stub function not called.');
-	var DEFAULT_WAIT_DELAY = 100;
+	var DEFAULT_WAIT_DELAY = 1;
 	
 	// The default adapter
 	var defaultAdapter = void 0;
@@ -315,7 +315,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @param {Function} reject The function to call when Promise is rejected
 	   * @param {Object} config The config object to be used for the request
 	   */
-	
 	  function Request(resolve, reject, config) {
 	    _classCallCheck(this, Request);
 	
@@ -426,7 +425,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Install the mock adapter for axios
 	   */
 	  install: function install() {
-	    var instance = arguments.length <= 0 || arguments[0] === undefined ? _axios2.default : arguments[0];
+	    var instance = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _axios2.default;
 	
 	    defaultAdapter = instance.defaults.adapter;
 	    instance.defaults.adapter = mockAdapter;
@@ -436,7 +435,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * Uninstall the mock adapter and reset state
 	   */
 	  uninstall: function uninstall() {
-	    var instance = arguments.length <= 0 || arguments[0] === undefined ? _axios2.default : arguments[0];
+	    var instance = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _axios2.default;
 	
 	    instance.defaults.adapter = defaultAdapter;
 	    this.stubs.reset();
@@ -524,24 +523,46 @@ return /******/ (function(modules) { // webpackBootstrap
 	   * @param {Number} delay How much time in milliseconds to wait
 	   */
 	  wait: function wait(fn) {
-	    var delay = arguments.length <= 1 || arguments[1] === undefined ? this.delay : arguments[1];
+	    var delay = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this.delay;
 	
 	    setTimeout(fn, delay);
+	  },
+	
+	  /**
+	   * A promise resolving to the most recent request that was tracked after waiting a short amount of time using `moxios.wait`.
+	   * Rejects with an error if no requests have been tracked.
+	   *
+	   * @returns {Promise<Request>}
+	   */
+	  mostRecentRequest: function mostRecentRequest() {
+	    var _this3 = this;
+	
+	    return new Promise(function (resolve, reject) {
+	      _this3.wait(function () {
+	        var request = _this3.requests.mostRecent();
+	
+	        if (!request) {
+	          return reject(Error("No request tracked."));
+	        }
+	
+	        resolve(request);
+	      });
+	    });
 	  }
 	};
 	
 	exports.default = moxios;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -613,9 +634,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -918,9 +939,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -935,9 +956,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -1009,9 +1030,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	);
 
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -1051,9 +1072,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = btoa;
 
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -1110,9 +1131,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	);
 
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -1141,9 +1162,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ },
+/***/ }),
 /* 9 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -1164,9 +1185,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ },
+/***/ }),
 /* 10 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	'use strict';
 	
@@ -1189,7 +1210,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ }
+/***/ })
 /******/ ])
 });
 ;

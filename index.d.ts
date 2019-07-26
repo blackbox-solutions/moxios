@@ -188,6 +188,15 @@ declare let moxios: {
    * @param delay How much time in milliseconds to wait
    */
   wait(fn: () => void, delay?: number): void;
+
+
+  /**
+   * A promise resolving to the most recent request that was tracked after waiting a short amount of time using `moxios.wait`.
+   * Rejects with an error if no requests have been tracked.
+   *
+   * @returns {Promise<Request>}
+   */
+  async mostRecentRequest(): Promise<Request>
 };
 
 export default moxios;

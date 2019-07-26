@@ -25,7 +25,7 @@ let mockAdapter = (config) => {
     moxios.requests.track(request)
 
     // Check for matching stub to auto respond with
-    for (let i=0, l=moxios.stubs.count(); i<l; i++) {
+    for (let i = 0, l = moxios.stubs.count(); i < l; i++) {
       let stub = moxios.stubs.at(i)
       let correctURL = stub.url instanceof RegExp ? stub.url.test(request.url) : stub.url === request.url;
       let correctMethod = true;
@@ -154,7 +154,7 @@ class Tracker {
    * Find and return element given the HTTP method and the URL.
    */
   get(method, url) {
-    function getElem (element, index, array) {
+    function getElem(element, index, array) {
       let matchedUrl = element.url instanceof RegExp ? element.url.test(element.url) : element.url === url;
       let matchedMethod;
 
@@ -232,8 +232,8 @@ class Request {
   respondWithTimeout() {
     let response = new Response(this, createTimeout(this.config))
     settle(this.resolve, this.reject, response)
-    return new Promise(function(resolve, reject) {
-      moxios.wait(function() {
+    return new Promise(function (resolve, reject) {
+      moxios.wait(function () {
         reject(response)
       })
     })
@@ -268,7 +268,7 @@ class Response {
     this.data = res.responseText || res.response;
     this.status = res.status
     this.statusText = res.statusText
-    
+
     /* lowecase all headers keys to be consistent with Axios */
     if ('headers' in res) {
       let newHeaders = {};
@@ -292,7 +292,7 @@ let moxios = {
   /**
    * Install the mock adapter for axios
    */
-  install: function(instance = axios) {
+  install: function (instance = axios) {
     defaultAdapter = instance.defaults.adapter
     instance.defaults.adapter = mockAdapter
   },
@@ -300,7 +300,7 @@ let moxios = {
   /**
    * Uninstall the mock adapter and reset state
    */
-  uninstall: function(instance = axios) {
+  uninstall: function (instance = axios) {
     instance.defaults.adapter = defaultAdapter
     this.stubs.reset()
     this.requests.reset()
@@ -314,7 +314,7 @@ let moxios = {
    * @param {Object} response The response to use when a match is made
    */
   stubRequest: function (urlOrRegExp, response) {
-    this.stubs.track({url: urlOrRegExp, response});
+    this.stubs.track({ url: urlOrRegExp, response });
   },
 
   /**
@@ -327,7 +327,7 @@ let moxios = {
    */
   stubOnce: function (method, urlOrRegExp, response) {
     return new Promise((resolve) => {
-      this.stubs.track({url: urlOrRegExp, method, response, resolve});
+      this.stubs.track({ url: urlOrRegExp, method, response, resolve });
     });
   },
 
@@ -342,8 +342,8 @@ let moxios = {
    */
   stubFailure: function (method, urlOrRegExp, response) {
     return new Promise((resolve, reject) => {
-      this.stubs.track({url: urlOrRegExp, method, response, resolve});
-      setTimeout(function() {
+      this.stubs.track({ url: urlOrRegExp, method, response, resolve });
+      setTimeout(function () {
         reject(TimeoutException);
       }, 500);
     });
@@ -354,8 +354,8 @@ let moxios = {
    *
    * @param {String|RegExp} urlOrRegExp A URL or RegExp to test against
    */
-  stubTimeout: function(urlOrRegExp) {
-    this.stubs.track({url: urlOrRegExp, timeout: true})
+  stubTimeout: function (urlOrRegExp) {
+    this.stubs.track({ url: urlOrRegExp, timeout: true })
   },
 
   /**
@@ -365,7 +365,7 @@ let moxios = {
    *
    * @param {Function} fn The function to be executed
    */
-  withMock: function(fn) {
+  withMock: function (fn) {
     this.install()
     try {
       fn()
@@ -382,8 +382,26 @@ let moxios = {
    * @param {Function} fn The function to execute once waiting is over
    * @param {Number} delay How much time in milliseconds to wait
    */
-  wait: function(fn, delay = this.delay) {
+  wait: function (fn, delay = this.delay) {
     setTimeout(fn, delay)
+  },
+
+  /**
+   * A promise resolving to the most recent request that was tracked after waiting a short amount of time using `moxios.wait`.
+   * Rejects with an error if no requests have been tracked.
+   *
+   * @returns {Promise<Request>}
+   */
+  mostRecentRequest: function () {
+    return new Promise((resolve, reject) => {
+      this.wait(() => {
+        const request = this.requests.mostRecent();
+
+        if (!request) { return reject(Error("No request tracked.")); }
+
+        resolve(request);
+      });
+    });
   }
 }
 
