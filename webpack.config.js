@@ -1,5 +1,5 @@
 var webpack = require('webpack')
-var fileName = require('./package').name
+var fileName = "moxios"
 var plugins = []
 
 if (process.env.MINIFY) {
