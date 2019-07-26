@@ -5,7 +5,7 @@
 
 import { AxiosInstance, AxiosRequestConfig } from "axios";
 
-interface Item {
+export interface Item {
   response?: any;
   responseText?: string;
   status?: number;
@@ -13,7 +13,7 @@ interface Item {
   headers?: any;
 }
 
-declare class Tracker {
+export declare class Tracker {
   constructor();
 
   /**
@@ -67,7 +67,7 @@ declare class Tracker {
   remove(method: string, url: string): Request;
 }
 
-declare class Request {
+export declare class Request {
   /**
    * Create a new Request object
    *
@@ -100,7 +100,7 @@ declare class Request {
   respondWith(res: Item): Promise<Response>;
 }
 
-declare class Response {
+export declare class Response {
   /**
    * Create a new Response object
    *
@@ -190,4 +190,4 @@ declare let moxios: {
   wait(fn: () => void, delay?: number): void;
 };
 
-export = moxios;
+export default moxios;
