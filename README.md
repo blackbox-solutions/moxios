@@ -1,4 +1,4 @@
-# moxios [![build status](https://img.shields.io/travis/axios/moxios.svg?style=flat-square)](https://travis-ci.org/axios/moxios)
+# moxios
 
 Mock [axios](https://github.com/axios/axios) requests for testing, with added and slightly modified type definitions from @types/moxios.
 
