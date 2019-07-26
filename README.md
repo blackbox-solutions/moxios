@@ -1,11 +1,11 @@
 # moxios [![build status](https://img.shields.io/travis/axios/moxios.svg?style=flat-square)](https://travis-ci.org/axios/moxios)
 
-Mock [axios](https://github.com/axios/axios) requests for testing
+Mock [axios](https://github.com/axios/axios) requests for testing, with added and slightly modified type definitions from @types/moxios.
 
 ## Installing
 
 ```bash
-$ npm install moxios --save-dev
+$ npm install @boxid/moxios --save-dev
 ```
 
 ## Example
